@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1543346841 source:c:\users\camilo\desktop\codeblocks\trabalho 2 (baqueta)\batalha naval\jogo.c
+	"jogo.h"
+	<stdio.h>
+	<stdlib.h>
+
+1543346614 c:\users\camilo\desktop\codeblocks\trabalho 2 (baqueta)\batalha naval\jogo.h
+	<stdio.h>
+	<stdlib.h>
+
+1543346897 source:c:\users\camilo\desktop\codeblocks\trabalho 2 (baqueta)\batalha naval\mainjogo.c
+	"jogo.h"
+	<time.h>
+	<stdio.h>
+	<stdlib.h>
+
