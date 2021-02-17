@@ -17,21 +17,21 @@ ALLEGRO_TIMER *timer =NULL; /* timer para FPS */
 bool inicializar(int LARGURA_TELA, int ALTURA_TELA)
 {
 
-    al_init(); /*inicialização do allegro */
-    al_init_primitives_addon(); /* inicializa a manipulação de imagens */
+    al_init(); /*inicializaÃ§Ã£o do allegro */
+    al_init_primitives_addon(); /* inicializa a manipulaÃ§Ã£o de imagens */
     al_install_keyboard(); /* inicialiaza do teclado */
     timer = al_create_timer(1.0 / FPS); /* inicializa o timer */
 
 
     janela = al_create_display(LARGURA_TELA, ALTURA_TELA); /* define o tamanho da janela */
 
-    fila_eventos = al_create_event_queue(); /* criação da fila de eventos */
+    fila_eventos = al_create_event_queue(); /* criaÃ§Ã£o da fila de eventos */
 
     al_register_event_source(fila_eventos, al_get_display_event_source(janela)); /* registra a janela */
     al_register_event_source(fila_eventos, al_get_keyboard_event_source()); /* registra a fila de eventos */
     al_register_event_source(fila_eventos, al_get_timer_event_source(timer)); /*registra o timer */
 
-    al_flip_display(); /* função que faz aparecer o conteudo na janela */
+    al_flip_display(); /* funÃ§Ã£o que faz aparecer o conteudo na janela */
     al_start_timer(timer); /* inicia o timer */
     return 1;
 }
@@ -68,9 +68,9 @@ int main()
     if (!inicializar(LARGURA_TELA, ALTURA_TELA))
         return -1;
 
-    srand(time(NULL)); /* gerador de numeros aleatórios */
+    srand(time(NULL)); /* gerador de numeros aleatÃ³rios */
 
-    /* alocação dos vetores */
+    /* alocaÃ§Ã£o dos vetores */
     x =  (float*) malloc(sizeof(float) * n_bolas);
     y =  (float*) malloc(sizeof(float) * n_bolas);
     dir_x =  (int*) malloc(sizeof(int) * n_bolas);
@@ -108,20 +108,20 @@ int main()
 
     for (i =0; i < n_bolas; i++)
      {
-        /* renderização dos círculos */
+        /* renderizaÃ§Ã£o dos cÃ­rculos */
 
         al_draw_filled_circle(x[i], y[i], raio, al_map_rgb(255, 0, 0)); /*cor vermelha para cada bola */
 
-        /*atualuização das velocidades */
+        /*atualuizaÃ§Ã£o das velocidades */
         x[i] += 1 * dir_x[i];
         y[i] += 1 * dir_y[i];
 
      }
        al_flip_display();
 
-        /* Essa colisão se refere das bolas contra a parede, como a massa
-        da parede é "infinito", sua velocidade  apenas se inverte devido a
-        colisao ser totalmente elastica, sendo inversão de VX caso ocorra
+        /* Essa colisÃ£o se refere das bolas contra a parede, como a massa
+        da parede Ã© "infinito", sua velocidade  apenas se inverte devido a
+        colisao ser totalmente elastica, sendo inversÃ£o de VX caso ocorra
         lateralmente e de VY caso ocorra verticalmente */
 
         for(i=0; i < n_bolas; i++)
@@ -152,35 +152,35 @@ int main()
         for(i=0; i < n_bolas; i++)
             for(j = i+1; j < n_bolas; j++)
              {
-                /* funções para ver se ocorreu colisão entre cada uma das bolas as bolas */
-                /* haverá colis~es se a disntacia entre os centros das bolas for menos que a soma dos raios */
-                /* HOUVE MANIPULAÇAO MATEMATICA PARA NÃO USAR RAIZ JÁ QUE DEMANDA MAIS DO COMPUTADOR */
+                /* funÃ§Ãµes para ver se ocorreu colisÃ£o entre cada uma das bolas as bolas */
+                /* haverÃ¡ colis~es se a disntacia entre os centros das bolas for menos que a soma dos raios */
+                /* HOUVE MANIPULAÃ‡AO MATEMATICA PARA NÃƒO USAR RAIZ JÃ QUE DEMANDA MAIS DO COMPUTADOR */
 
                 float dist_centros = 0;
                 dist_centros = (x[i]-x[j])*(x[i]-x[j]) + (y[i]-y[j])*(y[i]-y[j]);
-                   if(dist_centros <= raio*raio*4) /* houve colisão */
+                   if(dist_centros <= raio*raio*4) /* houve colisÃ£o */
                       {
                        /* implementa a fisica */
-                       /* para descobrir a velocidade após a colisão, precisa projetar a velocidade no eixo de colisão
+                       /* para descobrir a velocidade apÃ³s a colisÃ£o, precisa projetar a velocidade no eixo de colisÃ£o
                        primeiramente, dessa forma precisa aplicar o produto vetorial */
 
                        colisao_x = x[i] - x[j];
                        colisao_y = y[i] - y[j];
                        colisao = colisao_x * colisao_x + colisao_y * colisao_y; // norma
 
-                       /*projeção das velocidades */
+                       /*projeÃ§Ã£o das velocidades */
                         projx1 =  ((dir_x[i] * colisao_x ) + ( dir_y[i] * colisao_y)) * colisao_x / colisao;
                         projx2 =  ((dir_x[j] * colisao_x ) + ( dir_y[j] * colisao_y)) * colisao_x  / colisao;
                         projy1 = ((dir_x[i] * colisao_x) + (dir_y[i] * colisao_y))*colisao_y / colisao;
                         projy2 = ((dir_x[j] * colisao_x)+ (dir_y[j] * colisao_y)) * colisao_y / colisao;
 
-                       /* inversão das velocidades no eixo */
+                       /* inversÃ£o das velocidades no eixo */
                        dir_x[i] -= ( projx1 - projx2);
                        dir_x[j] -= (projx2 - projx1);
                        dir_y[i] -= (projy1 - projy2);
                        dir_y[j] -= (projy2 - projy1);
 
-                       /* conserto do bug para que elas não fiquem coladas e perder o movimento,
+                       /* conserto do bug para que elas nÃ£o fiquem coladas e perder o movimento,
                        dessa forma, deslocando um pixel cada bola */
 
 
@@ -196,7 +196,7 @@ int main()
 
           }
 
-        al_rest( 0.002); /* paralização do programa */
+        al_rest( 0.002); /* paralizaÃ§Ã£o do programa */
     }
     /* desalocando os vetores */
     free(x);
